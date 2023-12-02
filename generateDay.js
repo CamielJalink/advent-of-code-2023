@@ -6,7 +6,7 @@ const indexBoilerPlate = `import { readFileSync } from "fs";
 
 export default function advent() {
     const stringInput = readFileSync("input/${day}-test.txt", "utf-8");
-    const input = stringInput.split(/\\n\\n/gm);
+    const input = stringInput.split(/\\n/gm);
     console.log(input);
 }`;
 
