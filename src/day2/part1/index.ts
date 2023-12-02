@@ -3,7 +3,6 @@ import { readFileSync } from "fs";
 export default function advent() {
     const stringInput = readFileSync("input/day2.txt", "utf-8");
     const input = stringInput.split(/\n/gm);
-    input.pop();
     console.log(findSumOfIds(input));
 }
 

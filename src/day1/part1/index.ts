@@ -3,7 +3,6 @@ import { readFileSync } from "fs";
 export default function advent() {
     const stringInput = readFileSync("input/day1.txt", "utf-8");
     const input = stringInput.split(/\n/gm);
-    input.pop(); // stupid last line added by IntelliJ...
     console.log(findSum(input));
 }
 
