@@ -1,16 +1,10 @@
 import { readFileSync } from "fs";
 
 export default function advent() {
-    const stringInput = readFileSync("input/day5-test.txt", "utf-8");
+    const stringInput = readFileSync("input/day5.txt", "utf-8");
     const input = stringInput.split(/\n\n/gm);
     console.log(findLowestLocation(input));
 }
-
-// seeds: 79 14 55 13
-//
-// seed-to-soil map:
-// 50 98 2
-// 52 50 48
 
 function findLowestLocation(input:string[]) {
     const stringSeeds = input[0];
@@ -18,17 +12,43 @@ function findLowestLocation(input:string[]) {
     input.shift();
     const maps: Map[] = input.map((stringMap) => new Map(stringMap));
 
-    console.log(maps[0]);
-    return 0;
+    seeds.forEach((seed: Seed) => {
+        maps.forEach((map: Map) => {
+            seed.value = map.transform(seed.value);
+        });
+    });
+
+    let lowestLocation: bigint = seeds[0].value;
+    seeds.forEach((seed: Seed) => {
+        if(seed.value < lowestLocation){
+            lowestLocation = seed.value;
+        }
+    });
+    return lowestLocation;
 }
 
 class Map {
     name = "error";
+    rules: bigint[][] = [];
 
     constructor(stringMap: string) {
         const arrayMap = stringMap.split("\n");
         this.name = arrayMap[0];
         arrayMap.shift();
+        arrayMap.forEach((stringRule: string) => {
+            this.rules.push(stringRule.split(" ").map((stringNum) => BigInt(stringNum)));
+        });
+    }
+
+    transform(input: bigint){
+        for(const rule of this.rules) {
+            const [destRange, sourceRangeStart, rangeLength] = rule;
+            if(input >= sourceRangeStart && input < (sourceRangeStart + rangeLength)) {
+                input = (destRange + (input - sourceRangeStart));
+                break;
+            }
+        }
+        return input;
     }
 }
 
